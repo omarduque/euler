@@ -1,6 +1,7 @@
 
 import Array._
 import scala.collection.mutable.ArrayBuffer
+import math._
 
 object Runner {
   def main(args: Array[String]): Unit = {
@@ -38,28 +39,23 @@ class Euler{
     }
     fibonacci_ul(limit,null,null).filter(_ % 2 == 0).reduceLeft(_ + _)
   }
-  def euler3(param: String): Long = {
-    val number = param.toLong
-    def findPrimeNumbersTill(limit: Long): Array[Long] = {
-      def findPrimeNumbers(primes: Array[Long]): Array[Long] = {
+  def euler3(param: String): Double = {
+    val number = param.toDouble
+    def findPrimeNumbersTill(limit: Double): Array[Double] = {
+      def findPrimeNumbers(primes: Array[Double]): Array[Double] = {
         var returner = primes
-        def isPrime(n: Long): Boolean = { 
+        def isPrime(n: Double): Boolean = { 
             if( returner.map(p => n % p).filter(_ == 0).size == 0){
               true
             }else{
               false
             }
         }
-        
-        /*val ranges = (3L to number) by 2L
+        val upLimit = ceil(sqrt(number.toDouble))
+        val ranges = (3D to upLimit) by 2D
         
         for( x <- ranges){
-          if(isPrime(x)){
-            returner = concat(returner, Array.apply(x))
-          }
-        }*/
-        for( x <- 3L to number if x % 2L != 0L){
-          if(isPrime(x)){
+          if(isPrime(x) && (number % x) == 0){
             returner = concat(returner, Array.apply(x))
           }
         }
@@ -69,13 +65,37 @@ class Euler{
       findPrimeNumbers(Array.apply(2L))
     }
     val primes = findPrimeNumbersTill(number)
-    var primeFactorsBuffer = new ArrayBuffer[Long]()
-    for (x <- primes){
-      if((number % x) == 0){
-        primeFactorsBuffer += x
+    primes(primes.size - 1)
+  }
+  def euler7(param: String): Double = {
+     val position = param.toInt
+     def findPrimesTillPosition(position: Int): Array[Double] = {
+        def findPrimeNumbers(primes: Array[Double]): Array[Double] = {
+          var returner = primes
+          def isPrime(n: Double): Boolean = { 
+              if( returner.map(p => n % p).filter(_ == 0).size == 0){
+                true
+              }else{
+                false
+              }
+          }
+          
+          var x = 1
+          var prime = 3L
+          while( x < position){
+            if(isPrime(prime)){
+              returner = concat(returner, Array.apply(prime))
+              x +=1
+            }
+            prime +=2
+          }
+        
+          returner   
       }
-    }
-    var primeFactors = primeFactorsBuffer.toArray
-    primeFactors(primeFactors.size - 1)
+      findPrimeNumbers(Array.apply(2L))  
+     }
+     val primes = findPrimesTillPosition(position)
+     primes(primes.size - 1)
   }
 }
+  
